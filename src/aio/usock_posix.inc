@@ -592,6 +592,9 @@ static void nn_usock_shutdown (struct nn_fsm *self, int src, int type,
         nn_assert (type == NN_WORKER_TASK_EXECUTE);
         nn_worker_rm_fd (usock->worker, &usock->wfd);
 finish1:
+        usock->in.batch_len = 0;
+        usock->in.batch_pos = 0;
+        memset (&usock->out.hdr, 0, sizeof (struct msghdr));
         nn_closefd (usock->s);
         usock->s = -1;
 finish2:
